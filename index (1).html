@@ -1,0 +1,1723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>She Can Foundation</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+/* ═══════════════════════════════════════════
+   RESET & VARIABLES
+═══════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --rose:#d94f6e;
+  --rose-dark:#a8334f;
+  --rose-light:#f7d6de;
+  --gold:#c9963a;
+  --gold-light:#f5e6c8;
+  --ink:#1a0e14;
+  --ink-mid:#5a3a47;
+  --cream:#fdf5f0;
+  --warm-white:#fffbf8;
+  --card-bg:#ffffff;
+  --border:rgba(217,79,110,0.15);
+  --shadow:0 12px 48px rgba(26,14,20,0.10);
+  --shadow-hover:0 24px 64px rgba(26,14,20,0.18);
+  --radius:20px;
+  --transition:0.4s cubic-bezier(0.16,1,0.3,1);
+}
+
+html{scroll-behavior:smooth;overflow-x:hidden;}
+body{
+  font-family:'Outfit',sans-serif;
+  background:var(--cream);
+  color:var(--ink);
+  overflow-x:hidden;
+  cursor:none;
+}
+
+/* ═══════════════════════════════════════════
+   CUSTOM CURSOR
+═══════════════════════════════════════════ */
+#cursor{
+  position:fixed;width:12px;height:12px;
+  background:var(--rose);border-radius:50%;
+  pointer-events:none;z-index:9999;
+  transform:translate(-50%,-50%);
+  transition:width 0.3s,height 0.3s,background 0.3s;
+  mix-blend-mode:multiply;
+}
+#cursor-ring{
+  position:fixed;width:36px;height:36px;
+  border:1.5px solid var(--rose);border-radius:50%;
+  pointer-events:none;z-index:9998;
+  transform:translate(-50%,-50%);
+  transition:width 0.4s,height 0.4s,border-color 0.3s,transform 0.12s ease;
+  opacity:0.6;
+}
+body:hover #cursor{opacity:1;}
+.cursor-grow #cursor{width:20px;height:20px;}
+.cursor-grow #cursor-ring{width:52px;height:52px;opacity:0.3;}
+
+/* ═══════════════════════════════════════════
+   SCROLLBAR
+═══════════════════════════════════════════ */
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:var(--cream);}
+::-webkit-scrollbar-thumb{background:var(--rose);border-radius:2px;}
+
+/* ═══════════════════════════════════════════
+   PAGE LOADER
+═══════════════════════════════════════════ */
+#loader{
+  position:fixed;inset:0;z-index:10000;
+  background:var(--ink);
+  display:flex;align-items:center;justify-content:center;
+  flex-direction:column;gap:1.5rem;
+  transition:opacity 0.8s ease,visibility 0.8s ease;
+}
+#loader.done{opacity:0;visibility:hidden;}
+.loader-logo{
+  font-family:'Cormorant Garamond',serif;
+  font-size:3rem;color:var(--warm-white);
+  letter-spacing:-1px;
+  animation:loaderPulse 1.5s ease infinite;
+}
+.loader-logo em{color:var(--rose);font-style:italic;}
+.loader-bar{
+  width:180px;height:2px;background:rgba(255,255,255,0.15);
+  border-radius:1px;overflow:hidden;
+}
+.loader-fill{
+  height:100%;background:var(--rose);
+  animation:loaderFill 1.8s ease forwards;
+}
+@keyframes loaderPulse{0%,100%{opacity:0.7;}50%{opacity:1;}}
+@keyframes loaderFill{0%{width:0%;}100%{width:100%;}}
+
+/* ═══════════════════════════════════════════
+   NAV
+═══════════════════════════════════════════ */
+nav{
+  position:fixed;top:0;left:0;width:100%;z-index:1000;
+  padding:1.2rem 5%;
+  display:flex;align-items:center;justify-content:space-between;
+  transition:background var(--transition),box-shadow var(--transition),padding var(--transition);
+}
+nav.scrolled{
+  background:rgba(253,245,240,0.92);
+  backdrop-filter:blur(20px);
+  box-shadow:0 2px 24px rgba(26,14,20,0.08);
+  padding:0.8rem 5%;
+}
+.nav-logo{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.6rem;font-weight:600;color:var(--warm-white);
+  text-decoration:none;letter-spacing:-0.5px;
+  transition:color var(--transition);
+}
+nav.scrolled .nav-logo{color:var(--rose);}
+.nav-logo em{font-style:italic;}
+
+.nav-links{
+  display:flex;align-items:center;gap:2.5rem;list-style:none;
+}
+.nav-links a{
+  text-decoration:none;color:rgba(255,255,255,0.85);
+  font-size:0.88rem;font-weight:500;letter-spacing:0.04em;
+  position:relative;transition:color var(--transition);
+  cursor:none;
+}
+nav.scrolled .nav-links a{color:var(--ink-mid);}
+.nav-links a::after{
+  content:'';position:absolute;bottom:-4px;left:0;
+  width:0;height:1.5px;background:var(--rose);
+  transition:width var(--transition);
+}
+.nav-links a:hover::after,.nav-links a.active::after{width:100%;}
+.nav-links a:hover,nav.scrolled .nav-links a:hover{color:var(--rose);}
+
+.nav-cta{
+  background:var(--rose) !important;
+  color:var(--warm-white) !important;
+  padding:0.6rem 1.5rem;border-radius:50px;
+  font-size:0.85rem !important;
+  box-shadow:0 4px 20px rgba(217,79,110,0.35);
+  transition:transform var(--transition),box-shadow var(--transition) !important;
+}
+.nav-cta:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(217,79,110,0.45) !important;}
+.nav-cta::after{display:none !important;}
+
+.hamburger{
+  display:none;flex-direction:column;gap:5px;
+  cursor:none;background:none;border:none;padding:4px;
+}
+.hamburger span{
+  display:block;width:24px;height:2px;
+  background:var(--warm-white);border-radius:1px;
+  transition:transform 0.3s,opacity 0.3s,background 0.3s;
+}
+nav.scrolled .hamburger span{background:var(--ink);}
+.hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+.hamburger.open span:nth-child(2){opacity:0;}
+.hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+
+.mobile-menu{
+  position:fixed;inset:0;z-index:999;
+  background:var(--ink);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2.5rem;
+  opacity:0;visibility:hidden;transition:opacity 0.4s,visibility 0.4s;
+}
+.mobile-menu.open{opacity:1;visibility:visible;}
+.mobile-menu a{
+  font-family:'Cormorant Garamond',serif;
+  font-size:2.8rem;color:var(--warm-white);
+  text-decoration:none;font-weight:300;
+  transition:color 0.2s,transform 0.2s;
+  transform:translateY(20px);
+  opacity:0;
+}
+.mobile-menu.open a{transform:translateY(0);opacity:1;}
+.mobile-menu a:hover{color:var(--rose);}
+.mobile-menu.open a:nth-child(1){transition-delay:0.05s;}
+.mobile-menu.open a:nth-child(2){transition-delay:0.1s;}
+.mobile-menu.open a:nth-child(3){transition-delay:0.15s;}
+.mobile-menu.open a:nth-child(4){transition-delay:0.2s;}
+.mobile-menu.open a:nth-child(5){transition-delay:0.25s;}
+
+/* ═══════════════════════════════════════════
+   PAGE SYSTEM
+═══════════════════════════════════════════ */
+.page{display:none;}
+.page.active{display:block;}
+
+/* ═══════════════════════════════════════════
+   HERO
+═══════════════════════════════════════════ */
+#hero{
+  min-height:100vh;
+  background:var(--ink);
+  position:relative;overflow:hidden;
+  display:flex;align-items:center;
+}
+.hero-canvas{
+  position:absolute;inset:0;overflow:hidden;
+}
+.hero-orb{
+  position:absolute;border-radius:50%;
+  filter:blur(80px);opacity:0.25;
+  animation:orbFloat 8s ease-in-out infinite;
+}
+.hero-orb.o1{width:600px;height:600px;background:var(--rose);top:-150px;right:-100px;}
+.hero-orb.o2{width:400px;height:400px;background:var(--gold);bottom:-100px;left:-50px;animation-delay:4s;}
+.hero-orb.o3{width:250px;height:250px;background:#8b3a6e;top:40%;left:40%;animation-delay:2s;}
+@keyframes orbFloat{
+  0%,100%{transform:translate(0,0) scale(1);}
+  33%{transform:translate(30px,-20px) scale(1.05);}
+  66%{transform:translate(-20px,15px) scale(0.96);}
+}
+
+.hero-grid{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.03) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,0.03) 1px,transparent 1px);
+  background-size:60px 60px;
+}
+
+.hero-inner{
+  position:relative;z-index:2;
+  max-width:1300px;margin:0 auto;
+  padding:8rem 5% 5rem;
+  display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;
+  width:100%;
+}
+
+.hero-left{}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:0.6rem;
+  background:rgba(217,79,110,0.2);
+  border:1px solid rgba(217,79,110,0.4);
+  color:var(--rose-light);
+  padding:0.4rem 1rem;border-radius:50px;
+  font-size:0.75rem;font-weight:500;letter-spacing:0.12em;
+  text-transform:uppercase;margin-bottom:1.8rem;
+  animation:fadeSlideUp 0.8s 0.3s ease both;
+}
+.eyebrow-dot{
+  width:6px;height:6px;background:var(--rose);
+  border-radius:50%;animation:blink 2s ease infinite;
+}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0.3;}}
+
+.hero-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(3.2rem,6vw,5.5rem);
+  font-weight:300;line-height:1.05;
+  color:var(--warm-white);
+  margin-bottom:1.6rem;
+  animation:fadeSlideUp 0.8s 0.5s ease both;
+}
+.hero-title .line{overflow:hidden;display:block;}
+.hero-title .highlight{color:var(--rose);font-style:italic;}
+.hero-title .gold{color:var(--gold);}
+
+.hero-desc{
+  font-size:1.05rem;line-height:1.8;
+  color:rgba(255,255,255,0.6);max-width:460px;
+  margin-bottom:2.5rem;
+  animation:fadeSlideUp 0.8s 0.7s ease both;
+}
+
+.hero-actions{
+  display:flex;gap:1rem;flex-wrap:wrap;
+  animation:fadeSlideUp 0.8s 0.9s ease both;
+}
+.btn-rose{
+  display:inline-flex;align-items:center;gap:0.5rem;
+  background:var(--rose);color:var(--warm-white);
+  padding:0.9rem 2rem;border-radius:50px;
+  font-weight:500;font-size:0.95rem;text-decoration:none;border:none;cursor:none;
+  transition:transform var(--transition),box-shadow var(--transition),background var(--transition);
+  box-shadow:0 6px 24px rgba(217,79,110,0.4);
+}
+.btn-rose:hover{background:var(--rose-dark);transform:translateY(-3px);box-shadow:0 12px 36px rgba(217,79,110,0.5);}
+.btn-ghost{
+  display:inline-flex;align-items:center;gap:0.5rem;
+  background:transparent;color:rgba(255,255,255,0.8);
+  padding:0.9rem 2rem;border-radius:50px;
+  font-weight:500;font-size:0.95rem;text-decoration:none;border:none;cursor:none;
+  border:1.5px solid rgba(255,255,255,0.2);
+  transition:border-color var(--transition),color var(--transition),transform var(--transition);
+}
+.btn-ghost:hover{border-color:var(--rose);color:var(--rose);transform:translateY(-3px);}
+.btn-arrow{transition:transform 0.3s;}
+.btn-rose:hover .btn-arrow,.btn-ghost:hover .btn-arrow{transform:translateX(4px);}
+
+.hero-right{
+  animation:fadeSlideUp 0.8s 0.6s ease both;
+  position:relative;
+}
+.hero-card-stack{position:relative;height:500px;}
+.hero-card{
+  position:absolute;background:rgba(255,255,255,0.06);
+  backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.1);
+  border-radius:24px;padding:2rem;
+}
+.hc-main{
+  inset:0 0 60px 0;
+  background:linear-gradient(135deg,rgba(217,79,110,0.15),rgba(201,150,58,0.1));
+  display:flex;flex-direction:column;justify-content:flex-end;
+  overflow:hidden;
+}
+.hc-main-img{
+  position:absolute;inset:0;border-radius:24px;overflow:hidden;
+}
+.hc-main-img img{
+  width:100%;height:100%;object-fit:cover;opacity:0.5;
+  filter:saturate(0.7);
+}
+.hc-main-overlay{
+  position:absolute;inset:0;border-radius:24px;
+  background:linear-gradient(to top,rgba(26,14,20,0.85) 0%,transparent 60%);
+}
+.hc-main-content{position:relative;z-index:1;}
+.hc-tag{
+  display:inline-block;background:var(--rose);color:white;
+  font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;
+  padding:0.3rem 0.8rem;border-radius:50px;margin-bottom:0.8rem;font-weight:500;
+}
+.hc-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.5rem;font-weight:400;color:white;line-height:1.3;
+  margin-bottom:0.5rem;
+}
+.hc-sub{font-size:0.82rem;color:rgba(255,255,255,0.6);}
+
+.hc-stat{
+  bottom:0;right:-24px;
+  width:160px;
+  text-align:center;padding:1.5rem 1rem;
+  background:rgba(201,150,58,0.15);
+  border:1px solid rgba(201,150,58,0.25);
+  animation:floatCard 4s ease-in-out infinite;
+}
+.hc-stat-num{
+  font-family:'Cormorant Garamond',serif;
+  font-size:2.5rem;font-weight:600;color:var(--gold);display:block;
+}
+.hc-stat-label{font-size:0.75rem;color:rgba(255,255,255,0.5);margin-top:0.2rem;}
+
+.hc-quote{
+  top:20px;left:-20px;width:200px;padding:1.2rem;
+  font-size:0.8rem;line-height:1.6;color:rgba(255,255,255,0.7);
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  animation:floatCard 5s 2s ease-in-out infinite;
+}
+.hc-quote::before{
+  content:'"';font-size:2rem;color:var(--rose);line-height:0;
+  position:relative;top:0.5rem;display:block;margin-bottom:0.3rem;
+}
+
+@keyframes floatCard{
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(-10px);}
+}
+
+.hero-scroll{
+  position:absolute;bottom:3rem;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:0.5rem;
+  color:rgba(255,255,255,0.3);font-size:0.7rem;letter-spacing:0.15em;
+  text-transform:uppercase;animation:fadeSlideUp 0.8s 1.2s ease both;cursor:none;
+  text-decoration:none;transition:color 0.2s;
+}
+.hero-scroll:hover{color:rgba(255,255,255,0.6);}
+.scroll-line{
+  width:1px;height:48px;background:linear-gradient(to bottom,rgba(255,255,255,0.3),transparent);
+  animation:scrollPulse 2s ease infinite;
+}
+@keyframes scrollPulse{0%,100%{opacity:0.3;}50%{opacity:0.8;}}
+
+/* ═══════════════════════════════════════════
+   MARQUEE
+═══════════════════════════════════════════ */
+.marquee-strip{
+  background:var(--rose);
+  padding:1rem 0;overflow:hidden;
+  position:relative;z-index:1;
+}
+.marquee-track{
+  display:flex;width:max-content;
+  animation:marqueeScroll 22s linear infinite;
+}
+.marquee-track span{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.1rem;font-style:italic;
+  color:rgba(255,255,255,0.9);padding:0 2.5rem;
+  white-space:nowrap;
+}
+.marquee-track .dot{color:rgba(255,255,255,0.4);}
+@keyframes marqueeScroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+/* ═══════════════════════════════════════════
+   SECTION SHARED
+═══════════════════════════════════════════ */
+.section{padding:7rem 5%;}
+.section-inner{max-width:1300px;margin:0 auto;}
+
+.section-label{
+  display:inline-flex;align-items:center;gap:0.6rem;
+  color:var(--rose);font-size:0.75rem;font-weight:500;
+  letter-spacing:0.14em;text-transform:uppercase;margin-bottom:1rem;
+}
+.section-label::before{
+  content:'';width:28px;height:1.5px;background:var(--rose);border-radius:1px;
+}
+.section-heading{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(2.2rem,4vw,3.2rem);
+  font-weight:400;line-height:1.15;color:var(--ink);
+  margin-bottom:1.2rem;
+}
+.section-heading em{color:var(--rose);font-style:italic;}
+.section-body{
+  font-size:1.02rem;line-height:1.8;color:var(--ink-mid);
+  max-width:520px;
+}
+
+/* ═══════════════════════════════════════════
+   ABOUT SECTION
+═══════════════════════════════════════════ */
+#about-section{background:var(--warm-white);}
+
+.about-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:6rem;align-items:center;
+}
+
+.about-visual{position:relative;}
+.about-img-wrap{
+  position:relative;border-radius:var(--radius);overflow:hidden;
+  aspect-ratio:4/5;box-shadow:var(--shadow);
+}
+.about-img-wrap img{width:100%;height:100%;object-fit:cover;display:block;}
+.about-img-wrap::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(to bottom,transparent 60%,rgba(217,79,110,0.15));
+}
+
+.about-float-card{
+  position:absolute;bottom:-24px;right:-24px;
+  background:var(--ink);color:white;
+  padding:1.4rem 1.6rem;border-radius:16px;
+  box-shadow:var(--shadow);
+}
+.afc-num{
+  font-family:'Cormorant Garamond',serif;
+  font-size:2.8rem;font-weight:600;color:var(--rose);display:block;line-height:1;
+}
+.afc-text{font-size:0.78rem;color:rgba(255,255,255,0.6);margin-top:0.3rem;}
+
+.about-decoration{
+  position:absolute;top:-20px;left:-20px;
+  width:80px;height:80px;border:2px solid var(--rose-light);
+  border-radius:50%;opacity:0.6;
+  animation:rotateSlow 15s linear infinite;
+}
+.about-decoration::before{
+  content:'';position:absolute;top:50%;left:50%;
+  width:6px;height:6px;background:var(--rose);border-radius:50%;
+  transform:translate(-50%,-200%);
+}
+@keyframes rotateSlow{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+
+.about-content{}
+.about-text{font-size:1rem;line-height:1.85;color:var(--ink-mid);margin-bottom:1rem;}
+
+.values-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:2rem;
+}
+.value-card{
+  background:var(--cream);border-radius:14px;padding:1.2rem;
+  border:1px solid var(--border);
+  transition:transform var(--transition),box-shadow var(--transition),border-color var(--transition);
+  cursor:none;
+}
+.value-card:hover{transform:translateY(-4px);box-shadow:var(--shadow);border-color:var(--rose);}
+.value-icon{font-size:1.6rem;margin-bottom:0.6rem;}
+.value-title{font-weight:600;font-size:0.88rem;color:var(--ink);margin-bottom:0.3rem;}
+.value-desc{font-size:0.8rem;color:var(--ink-mid);line-height:1.5;}
+
+/* ═══════════════════════════════════════════
+   IMPACT COUNTER
+═══════════════════════════════════════════ */
+#impact{
+  background:var(--ink);
+  padding:5rem 5%;position:relative;overflow:hidden;
+}
+#impact::before{
+  content:'';position:absolute;inset:0;
+  background:url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h80v80H0z' fill='none'/%3E%3Ccircle cx='40' cy='40' r='1' fill='rgba(217,79,110,0.15)'/%3E%3C/svg%3E") repeat;
+}
+.impact-inner{max-width:1300px;margin:0 auto;position:relative;}
+.impact-header{text-align:center;margin-bottom:4rem;}
+.impact-header .section-heading{color:var(--warm-white);}
+.impact-header .section-body{color:rgba(255,255,255,0.5);margin:0 auto;}
+
+.impact-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;
+}
+.impact-item{
+  text-align:center;padding:2rem 1rem;
+  border:1px solid rgba(217,79,110,0.2);border-radius:var(--radius);
+  background:rgba(217,79,110,0.05);
+  transition:border-color var(--transition),background var(--transition),transform var(--transition);
+  cursor:none;
+}
+.impact-item:hover{border-color:var(--rose);background:rgba(217,79,110,0.1);transform:translateY(-6px);}
+.impact-num{
+  font-family:'Cormorant Garamond',serif;
+  font-size:3.5rem;font-weight:600;color:var(--rose);display:block;line-height:1;
+  margin-bottom:0.5rem;
+}
+.impact-plus{color:var(--gold);}
+.impact-label{font-size:0.85rem;color:rgba(255,255,255,0.5);letter-spacing:0.06em;}
+.impact-desc{font-size:0.75rem;color:rgba(255,255,255,0.3);margin-top:0.3rem;}
+
+/* ═══════════════════════════════════════════
+   PROGRAMS
+═══════════════════════════════════════════ */
+#programs{background:var(--cream);}
+.programs-header{
+  display:grid;grid-template-columns:1fr 1fr;gap:4rem;
+  align-items:end;margin-bottom:4rem;
+}
+.programs-header-right{display:flex;flex-direction:column;justify-content:flex-end;align-items:flex-end;}
+
+.programs-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;
+}
+.program-card{
+  background:var(--card-bg);border-radius:var(--radius);
+  overflow:hidden;border:1px solid var(--border);
+  transition:transform var(--transition),box-shadow var(--transition);
+  cursor:none;position:relative;
+}
+.program-card:hover{transform:translateY(-8px);box-shadow:var(--shadow-hover);}
+.program-card.featured{
+  grid-row:span 2;
+  background:var(--ink);
+}
+.program-img{height:200px;overflow:hidden;position:relative;}
+.program-img img{width:100%;height:100%;object-fit:cover;transition:transform 0.6s ease;}
+.program-card:hover .program-img img{transform:scale(1.05);}
+.program-card.featured .program-img{height:260px;}
+
+.program-body{padding:1.6rem;}
+.program-tag{
+  display:inline-block;background:var(--rose-light);color:var(--rose);
+  font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;
+  padding:0.3rem 0.8rem;border-radius:50px;margin-bottom:0.8rem;
+}
+.program-card.featured .program-tag{background:rgba(217,79,110,0.2);color:var(--rose-light);}
+.program-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.3rem;font-weight:400;color:var(--ink);
+  margin-bottom:0.6rem;line-height:1.3;
+}
+.program-card.featured .program-title{color:var(--warm-white);font-size:1.6rem;}
+.program-desc{font-size:0.85rem;line-height:1.7;color:var(--ink-mid);}
+.program-card.featured .program-desc{color:rgba(255,255,255,0.55);}
+
+.program-link{
+  display:inline-flex;align-items:center;gap:0.4rem;
+  color:var(--rose);font-size:0.85rem;font-weight:500;
+  text-decoration:none;margin-top:1rem;
+  transition:gap var(--transition);cursor:none;
+}
+.program-link:hover{gap:0.8rem;}
+
+/* ═══════════════════════════════════════════
+   STORIES
+═══════════════════════════════════════════ */
+#stories{background:var(--warm-white);}
+.stories-header{text-align:center;margin-bottom:4rem;}
+.stories-header .section-body{margin:0 auto;}
+
+.testimonial-slider{position:relative;overflow:hidden;}
+.testimonial-track{
+  display:flex;transition:transform 0.6s cubic-bezier(0.16,1,0.3,1);
+}
+.testimonial-slide{
+  min-width:100%;padding:0 1rem;
+}
+.testimonial-inner{
+  max-width:760px;margin:0 auto;text-align:center;
+  padding:3rem;background:var(--cream);border-radius:28px;
+  border:1px solid var(--border);position:relative;
+}
+.t-quote-mark{
+  font-family:'Cormorant Garamond',serif;
+  font-size:6rem;color:var(--rose);line-height:0;
+  position:absolute;top:1.5rem;left:2rem;opacity:0.3;
+}
+.t-text{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.4rem;font-weight:300;line-height:1.7;
+  color:var(--ink);margin-bottom:2rem;font-style:italic;
+}
+.t-author{display:flex;align-items:center;justify-content:center;gap:1rem;}
+.t-avatar{
+  width:52px;height:52px;border-radius:50%;overflow:hidden;
+  border:2px solid var(--rose-light);
+}
+.t-avatar img{width:100%;height:100%;object-fit:cover;}
+.t-name{font-weight:600;font-size:0.9rem;color:var(--ink);}
+.t-role{font-size:0.78rem;color:var(--ink-mid);margin-top:0.15rem;}
+
+.slider-controls{
+  display:flex;align-items:center;justify-content:center;gap:1.5rem;margin-top:2.5rem;
+}
+.slider-btn{
+  background:none;border:1.5px solid var(--border);border-radius:50%;
+  width:44px;height:44px;cursor:none;display:flex;align-items:center;justify-content:center;
+  color:var(--ink-mid);transition:all var(--transition);
+}
+.slider-btn:hover{border-color:var(--rose);color:var(--rose);transform:scale(1.05);}
+.slider-dots{display:flex;gap:0.5rem;}
+.slider-dot{
+  width:8px;height:8px;border-radius:50%;background:var(--border);
+  cursor:none;transition:background var(--transition),width var(--transition);
+  border:none;
+}
+.slider-dot.active{background:var(--rose);width:24px;border-radius:4px;}
+
+/* ═══════════════════════════════════════════
+   TEAM
+═══════════════════════════════════════════ */
+#team{background:var(--cream);}
+.team-header{text-align:center;margin-bottom:4rem;}
+.team-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;}
+.team-card{cursor:none;text-align:center;}
+.team-img-wrap{
+  position:relative;border-radius:20px;overflow:hidden;margin-bottom:1.2rem;
+  aspect-ratio:3/4;
+}
+.team-img-wrap img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.5s ease;}
+.team-card:hover .team-img-wrap img{transform:scale(1.04);}
+.team-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(217,79,110,0.85) 0%,transparent 50%);
+  opacity:0;transition:opacity var(--transition);
+  display:flex;align-items:flex-end;justify-content:center;
+  padding-bottom:1.5rem;
+}
+.team-card:hover .team-overlay{opacity:1;}
+.team-social{display:flex;gap:0.5rem;}
+.team-social a{
+  width:34px;height:34px;background:rgba(255,255,255,0.2);
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  color:white;font-size:0.8rem;text-decoration:none;cursor:none;
+  transition:background 0.2s;
+}
+.team-social a:hover{background:rgba(255,255,255,0.35);}
+.team-name{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;margin-bottom:0.2rem;}
+.team-role{font-size:0.8rem;color:var(--ink-mid);}
+
+/* ═══════════════════════════════════════════
+   EVENTS
+═══════════════════════════════════════════ */
+#events{background:var(--warm-white);}
+.events-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:3rem;}
+.event-list{display:flex;flex-direction:column;gap:1.2rem;}
+.event-item{
+  display:flex;gap:1.4rem;align-items:flex-start;
+  padding:1.4rem;background:var(--cream);border-radius:16px;
+  border:1px solid var(--border);cursor:none;
+  transition:border-color var(--transition),transform var(--transition),box-shadow var(--transition);
+}
+.event-item:hover{border-color:var(--rose);transform:translateX(6px);box-shadow:var(--shadow);}
+.event-date{
+  background:var(--rose);color:white;padding:0.6rem 0.9rem;
+  border-radius:10px;text-align:center;min-width:52px;
+  flex-shrink:0;
+}
+.event-day{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:600;line-height:1;}
+.event-month{font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;opacity:0.85;}
+.event-info{}
+.event-title{font-weight:600;font-size:0.95rem;color:var(--ink);margin-bottom:0.3rem;}
+.event-meta{font-size:0.8rem;color:var(--ink-mid);}
+.event-badge{
+  display:inline-block;background:var(--rose-light);color:var(--rose);
+  font-size:0.68rem;font-weight:600;padding:0.2rem 0.6rem;border-radius:50px;
+  margin-top:0.4rem;
+}
+
+.events-cta-card{
+  background:var(--ink);border-radius:var(--radius);
+  padding:2.5rem;display:flex;flex-direction:column;justify-content:space-between;
+  position:relative;overflow:hidden;
+}
+.events-cta-card::before{
+  content:'';position:absolute;top:-60px;right:-60px;
+  width:220px;height:220px;border-radius:50%;
+  background:radial-gradient(circle,rgba(217,79,110,0.3),transparent 70%);
+}
+.ecc-label{
+  font-size:0.72rem;letter-spacing:0.14em;text-transform:uppercase;
+  color:rgba(255,255,255,0.4);margin-bottom:0.8rem;
+}
+.ecc-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:2rem;color:white;font-weight:300;line-height:1.3;margin-bottom:1rem;
+}
+.ecc-title em{color:var(--rose);font-style:italic;}
+.ecc-desc{font-size:0.88rem;color:rgba(255,255,255,0.5);line-height:1.7;margin-bottom:2rem;}
+.btn-rose-small{
+  display:inline-flex;align-items:center;gap:0.4rem;
+  background:var(--rose);color:white;padding:0.75rem 1.5rem;
+  border-radius:50px;font-size:0.88rem;font-weight:500;
+  text-decoration:none;border:none;cursor:none;
+  transition:background var(--transition),transform var(--transition);align-self:flex-start;
+}
+.btn-rose-small:hover{background:var(--rose-dark);transform:translateY(-2px);}
+
+/* ═══════════════════════════════════════════
+   VOLUNTEER CTA
+═══════════════════════════════════════════ */
+#volunteer-cta{
+  margin:0 5% 5rem;border-radius:32px;
+  background:linear-gradient(135deg,#1a0e14 0%,#3d1a25 50%,#1a0e14 100%);
+  padding:6rem 8%;position:relative;overflow:hidden;
+}
+#volunteer-cta::before{
+  content:'';position:absolute;
+  top:-40%;left:-10%;width:600px;height:600px;border-radius:50%;
+  background:radial-gradient(circle,rgba(217,79,110,0.25),transparent 70%);
+}
+#volunteer-cta::after{
+  content:'';position:absolute;
+  bottom:-40%;right:-10%;width:500px;height:500px;border-radius:50%;
+  background:radial-gradient(circle,rgba(201,150,58,0.2),transparent 70%);
+}
+.vcta-inner{
+  position:relative;z-index:1;
+  display:grid;grid-template-columns:1fr auto;align-items:center;gap:4rem;
+}
+.vcta-label{
+  font-size:0.72rem;letter-spacing:0.16em;text-transform:uppercase;
+  color:rgba(255,255,255,0.4);margin-bottom:1rem;
+}
+.vcta-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(2.2rem,4vw,3.5rem);color:white;
+  font-weight:300;line-height:1.15;margin-bottom:1rem;
+}
+.vcta-title em{color:var(--rose);font-style:italic;}
+.vcta-desc{font-size:0.95rem;color:rgba(255,255,255,0.5);line-height:1.75;max-width:480px;}
+.vcta-right{display:flex;flex-direction:column;gap:1rem;min-width:240px;}
+.btn-rose-lg{
+  display:flex;align-items:center;justify-content:center;gap:0.5rem;
+  background:var(--rose);color:white;padding:1rem 2rem;border-radius:50px;
+  font-weight:500;font-size:1rem;text-decoration:none;border:none;cursor:none;
+  box-shadow:0 8px 28px rgba(217,79,110,0.4);
+  transition:transform var(--transition),box-shadow var(--transition),background var(--transition);
+  white-space:nowrap;
+}
+.btn-rose-lg:hover{transform:translateY(-3px);box-shadow:0 14px 36px rgba(217,79,110,0.5);background:var(--rose-dark);}
+.btn-outline-white{
+  display:flex;align-items:center;justify-content:center;gap:0.5rem;
+  background:transparent;color:rgba(255,255,255,0.7);padding:1rem 2rem;border-radius:50px;
+  font-weight:500;font-size:1rem;text-decoration:none;border:none;cursor:none;
+  border:1.5px solid rgba(255,255,255,0.2);
+  transition:border-color var(--transition),color var(--transition);white-space:nowrap;
+}
+.btn-outline-white:hover{border-color:var(--rose);color:var(--rose);}
+
+/* ═══════════════════════════════════════════
+   GALLERY
+═══════════════════════════════════════════ */
+#gallery{background:var(--cream);}
+.gallery-header{text-align:center;margin-bottom:3rem;}
+.gallery-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  grid-template-rows:auto auto;
+  gap:1rem;
+}
+.gallery-item{
+  border-radius:16px;overflow:hidden;cursor:none;
+  position:relative;
+}
+.gallery-item img{
+  width:100%;height:100%;object-fit:cover;display:block;
+  transition:transform 0.5s ease,filter 0.3s;
+}
+.gallery-item:hover img{transform:scale(1.06);filter:brightness(0.85);}
+.gallery-item.tall{grid-row:span 2;}
+.gallery-item.wide{grid-column:span 2;}
+.gallery-item{height:220px;}
+.gallery-item.tall{height:460px;}
+
+/* ═══════════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════════ */
+footer{background:var(--ink);padding:5rem 5% 2.5rem;}
+.footer-inner{
+  max-width:1300px;margin:0 auto;
+  display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:4rem;
+  margin-bottom:4rem;
+}
+.footer-brand{}
+.footer-logo{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.8rem;color:white;font-weight:400;
+  display:block;margin-bottom:1rem;
+}
+.footer-logo em{color:var(--rose);font-style:italic;}
+.footer-tagline{font-size:0.88rem;color:rgba(255,255,255,0.4);line-height:1.7;max-width:260px;margin-bottom:1.5rem;}
+.footer-socials{display:flex;gap:0.8rem;}
+.footer-social{
+  width:38px;height:38px;border-radius:50%;
+  border:1px solid rgba(255,255,255,0.12);
+  display:flex;align-items:center;justify-content:center;
+  color:rgba(255,255,255,0.5);text-decoration:none;font-size:0.85rem;
+  transition:border-color var(--transition),color var(--transition),background var(--transition);cursor:none;
+}
+.footer-social:hover{border-color:var(--rose);color:var(--rose);background:rgba(217,79,110,0.1);}
+
+.footer-col h4{
+  font-size:0.75rem;letter-spacing:0.14em;text-transform:uppercase;
+  color:rgba(255,255,255,0.3);margin-bottom:1.2rem;font-weight:500;
+}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:0.7rem;}
+.footer-col a{
+  color:rgba(255,255,255,0.5);text-decoration:none;font-size:0.88rem;
+  transition:color var(--transition);cursor:none;
+}
+.footer-col a:hover{color:var(--rose);}
+
+.footer-bottom{
+  max-width:1300px;margin:0 auto;
+  padding-top:2rem;border-top:1px solid rgba(255,255,255,0.08);
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;
+}
+.footer-copy{font-size:0.8rem;color:rgba(255,255,255,0.25);}
+.footer-love{font-size:0.8rem;color:rgba(255,255,255,0.25);}
+.footer-love span{color:var(--rose);}
+
+/* ═══════════════════════════════════════════
+   REVEAL ANIMATIONS
+═══════════════════════════════════════════ */
+@keyframes fadeSlideUp{
+  from{opacity:0;transform:translateY(30px);}
+  to{opacity:1;transform:translateY(0);}
+}
+.reveal{opacity:0;transform:translateY(40px);transition:opacity 0.7s ease,transform 0.7s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+.reveal-left{opacity:0;transform:translateX(-40px);transition:opacity 0.7s ease,transform 0.7s ease;}
+.reveal-left.visible{opacity:1;transform:translateX(0);}
+.reveal-right{opacity:0;transform:translateX(40px);transition:opacity 0.7s ease,transform 0.7s ease;}
+.reveal-right.visible{opacity:1;transform:translateX(0);}
+.reveal-scale{opacity:0;transform:scale(0.92);transition:opacity 0.7s ease,transform 0.7s ease;}
+.reveal-scale.visible{opacity:1;transform:scale(1);}
+.delay-1{transition-delay:0.1s;}
+.delay-2{transition-delay:0.2s;}
+.delay-3{transition-delay:0.3s;}
+.delay-4{transition-delay:0.4s;}
+
+/* ═══════════════════════════════════════════
+   CONTACT PAGE
+═══════════════════════════════════════════ */
+.contact-hero{
+  background:var(--ink);padding:10rem 5% 6rem;
+  position:relative;overflow:hidden;
+}
+.contact-hero-orb{
+  position:absolute;width:500px;height:500px;border-radius:50%;
+  background:radial-gradient(circle,rgba(217,79,110,0.2),transparent 70%);
+  top:-100px;right:-100px;
+}
+.contact-hero-content{max-width:1300px;margin:0 auto;position:relative;}
+.contact-hero h1{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(3rem,6vw,5rem);font-weight:300;color:white;
+  line-height:1.1;margin-bottom:1rem;
+}
+.contact-hero h1 em{color:var(--rose);font-style:italic;}
+.contact-hero p{font-size:1.05rem;color:rgba(255,255,255,0.5);max-width:500px;}
+
+.contact-section{padding:6rem 5%;background:var(--cream);}
+.contact-grid{max-width:1300px;margin:0 auto;display:grid;grid-template-columns:1fr 1.4fr;gap:5rem;}
+
+.contact-info{}
+.ci-title{font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:var(--ink);margin-bottom:1.5rem;}
+.ci-items{display:flex;flex-direction:column;gap:1.2rem;margin-bottom:2.5rem;}
+.ci-item{display:flex;gap:1rem;align-items:flex-start;}
+.ci-icon{
+  width:42px;height:42px;border-radius:10px;background:var(--rose-light);
+  display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;
+}
+.ci-label{font-size:0.75rem;color:var(--ink-mid);margin-bottom:0.2rem;letter-spacing:0.06em;text-transform:uppercase;}
+.ci-value{font-size:0.92rem;color:var(--ink);font-weight:500;}
+
+.contact-form-wrap{
+  background:var(--warm-white);border-radius:24px;padding:3rem;
+  border:1px solid var(--border);box-shadow:var(--shadow);
+}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;}
+.form-group{margin-bottom:1.4rem;}
+.form-group label{display:block;font-size:0.78rem;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink-mid);margin-bottom:0.5rem;}
+.form-group input,.form-group textarea,.form-group select{
+  width:100%;padding:0.85rem 1rem;border-radius:10px;
+  border:1.5px solid var(--border);background:var(--cream);
+  font-family:'Outfit',sans-serif;font-size:0.9rem;color:var(--ink);
+  transition:border-color var(--transition),box-shadow var(--transition);
+  outline:none;cursor:none;
+}
+.form-group input:focus,.form-group textarea:focus,.form-group select:focus{
+  border-color:var(--rose);box-shadow:0 0 0 3px rgba(217,79,110,0.1);
+}
+.form-group textarea{height:120px;resize:vertical;}
+.form-submit{
+  width:100%;background:var(--rose);color:white;
+  padding:1rem;border-radius:50px;border:none;
+  font-family:'Outfit',sans-serif;font-size:1rem;font-weight:500;cursor:none;
+  transition:background var(--transition),transform var(--transition),box-shadow var(--transition);
+  box-shadow:0 4px 20px rgba(217,79,110,0.3);
+}
+.form-submit:hover{background:var(--rose-dark);transform:translateY(-2px);box-shadow:0 8px 28px rgba(217,79,110,0.4);}
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════ */
+@media(max-width:1100px){
+  .hero-inner{grid-template-columns:1fr;max-width:680px;text-align:center;}
+  .hero-actions{justify-content:center;}
+  .hero-desc{margin:0 auto 2.5rem;}
+  .hero-right{display:none;}
+  .about-grid{grid-template-columns:1fr;}
+  .impact-grid{grid-template-columns:repeat(2,1fr);}
+  .programs-header{grid-template-columns:1fr;}
+  .programs-grid{grid-template-columns:1fr 1fr;}
+  .program-card.featured{grid-row:auto;}
+  .team-grid{grid-template-columns:repeat(2,1fr);}
+  .events-grid{grid-template-columns:1fr;}
+  .vcta-inner{grid-template-columns:1fr;text-align:center;}
+  .vcta-desc{margin:0 auto;}
+  .vcta-right{flex-direction:row;justify-content:center;}
+  .footer-inner{grid-template-columns:1fr 1fr;gap:2.5rem;}
+  .gallery-grid{grid-template-columns:repeat(2,1fr);}
+  .gallery-item.tall{height:220px;grid-row:auto;}
+  .gallery-item.wide{grid-column:auto;}
+  .contact-grid{grid-template-columns:1fr;}
+}
+
+@media(max-width:720px){
+  .nav-links{display:none;}
+  .hamburger{display:flex;}
+  .hero-title{font-size:2.8rem;}
+  .impact-grid{grid-template-columns:1fr 1fr;}
+  .programs-grid{grid-template-columns:1fr;}
+  .team-grid{grid-template-columns:1fr 1fr;}
+  .values-grid{grid-template-columns:1fr;}
+  .footer-inner{grid-template-columns:1fr;}
+  .vcta-right{flex-direction:column;}
+  .form-row{grid-template-columns:1fr;}
+  .gallery-grid{grid-template-columns:1fr 1fr;}
+  #volunteer-cta{margin:0 3% 4rem;padding:4rem 5%;}
+}
+
+@media(max-width:480px){
+  .hero-title{font-size:2.2rem;}
+  .impact-grid{grid-template-columns:1fr 1fr;}
+  .team-grid{grid-template-columns:1fr 1fr;}
+  .hero-actions{flex-direction:column;align-items:center;}
+  nav{padding:1rem 4%;}
+}
+</style>
+</head>
+<body>
+
+<!-- CURSOR -->
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="loader-logo">She <em>Can</em> ✦</div>
+  <div class="loader-bar"><div class="loader-fill"></div></div>
+</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="nav-logo" onclick="showPage('home')">She <em>Can</em> ✦</a>
+  <ul class="nav-links">
+    <li><a href="#" onclick="showPage('home');scrollTo('hero')" class="active" data-page="home">Home</a></li>
+    <li><a href="#" onclick="showPage('home');scrollTo('about-section')" data-page="home">About</a></li>
+    <li><a href="#" onclick="showPage('home');scrollTo('programs')" data-page="home">Programs</a></li>
+    <li><a href="#" onclick="showPage('contact')" data-page="contact">Contact</a></li>
+    <li><a href="#" onclick="showPage('home');scrollTo('volunteer-cta')" class="nav-cta">Volunteer</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" onclick="toggleMobile()">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#" onclick="closeMobile();showPage('home');scrollTo('hero')">Home</a>
+  <a href="#" onclick="closeMobile();showPage('home');scrollTo('about-section')">About</a>
+  <a href="#" onclick="closeMobile();showPage('home');scrollTo('programs')">Programs</a>
+  <a href="#" onclick="closeMobile();showPage('home');scrollTo('stories')">Stories</a>
+  <a href="#" onclick="closeMobile();showPage('contact')">Contact</a>
+</div>
+
+<!-- ══════════════ HOME PAGE ══════════════ -->
+<div id="page-home" class="page active">
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-canvas">
+      <div class="hero-orb o1"></div>
+      <div class="hero-orb o2"></div>
+      <div class="hero-orb o3"></div>
+      <div class="hero-grid"></div>
+    </div>
+    <div class="hero-inner">
+      <div class="hero-left">
+        <div class="hero-eyebrow"><span class="eyebrow-dot"></span>Empowering Women Since 2016</div>
+        <h1 class="hero-title">
+          <span class="line">She Dares.</span>
+          <span class="line">She Leads.</span>
+          <span class="line highlight">She Can.</span>
+        </h1>
+        <p class="hero-desc">A movement rooted in belief — that every woman, regardless of where she starts, holds the power to transform her life and her world.</p>
+        <div class="hero-actions">
+          <a href="#" class="btn-rose" onclick="showPage('home');scrollTo('volunteer-cta')">Join Our Mission <span class="btn-arrow">→</span></a>
+          <a href="#" class="btn-ghost" onclick="showPage('home');scrollTo('about-section')">Our Story <span class="btn-arrow">→</span></a>
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="hero-card-stack">
+          <div class="hero-card hc-main">
+            <div class="hc-main-img">
+              <img src="https://images.unsplash.com/photo-1573497491765-dccce02b29df?w=600&q=80" alt="Women empowerment"/>
+            </div>
+            <div class="hc-main-overlay"></div>
+            <div class="hc-main-content">
+              <div class="hc-tag">Featured Impact</div>
+              <div class="hc-title">Building Tomorrow's Leaders</div>
+              <div class="hc-sub">She Can Mentorship Program · 2024</div>
+            </div>
+          </div>
+          <div class="hero-card hc-stat">
+            <span class="hc-stat-num">5K<span style="color:var(--rose);font-size:1.2rem;">+</span></span>
+            <div class="hc-stat-label">Women Supported</div>
+          </div>
+          <div class="hero-card hc-quote">
+            "She gave me a reason to believe in myself again."
+            <div style="margin-top:0.7rem;font-size:0.7rem;color:rgba(255,255,255,0.4);font-family:'Outfit',sans-serif;font-style:normal;">— Priya, Beneficiary</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <a href="#" class="hero-scroll" onclick="scrollTo('about-section')">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </a>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee-strip">
+    <div class="marquee-track">
+      <span>Education</span><span class="dot">✦</span>
+      <span>Mentorship</span><span class="dot">✦</span>
+      <span>Leadership</span><span class="dot">✦</span>
+      <span>Economic Empowerment</span><span class="dot">✦</span>
+      <span>Health & Wellbeing</span><span class="dot">✦</span>
+      <span>Community</span><span class="dot">✦</span>
+      <span>She Dares</span><span class="dot">✦</span>
+      <span>She Leads</span><span class="dot">✦</span>
+      <span>She Can</span><span class="dot">✦</span>
+      <!-- duplicate for seamless loop -->
+      <span>Education</span><span class="dot">✦</span>
+      <span>Mentorship</span><span class="dot">✦</span>
+      <span>Leadership</span><span class="dot">✦</span>
+      <span>Economic Empowerment</span><span class="dot">✦</span>
+      <span>Health & Wellbeing</span><span class="dot">✦</span>
+      <span>Community</span><span class="dot">✦</span>
+      <span>She Dares</span><span class="dot">✦</span>
+      <span>She Leads</span><span class="dot">✦</span>
+      <span>She Can</span><span class="dot">✦</span>
+    </div>
+  </div>
+
+  <!-- ABOUT -->
+  <section id="about-section" class="section" style="background:var(--warm-white)">
+    <div class="section-inner about-grid">
+      <div class="about-visual reveal-left">
+        <div class="about-decoration"></div>
+        <div class="about-img-wrap">
+          <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=700&q=80" alt="She Can Foundation community"/>
+        </div>
+        <div class="about-float-card">
+          <span class="afc-num">120<span style="color:var(--gold)">+</span></span>
+          <div class="afc-text">Communities Reached</div>
+        </div>
+      </div>
+      <div class="about-content reveal-right">
+        <div class="section-label">Our Story</div>
+        <h2 class="section-heading">More Than an NGO —<br><em>A Movement</em></h2>
+        <p class="about-text">She Can Foundation was born from a simple truth: when women are given real support — not pity, not charity, but genuine opportunity — they rise, and they lift entire communities with them.</p>
+        <p class="about-text">Since 2016, we've worked in schools, homes, and workplaces to dismantle barriers and replace them with confidence, skills, and community.</p>
+        <div class="values-grid">
+          <div class="value-card">
+            <div class="value-icon">📚</div>
+            <div class="value-title">Education</div>
+            <div class="value-desc">Skills workshops, scholarships, and digital literacy for every stage of life.</div>
+          </div>
+          <div class="value-card">
+            <div class="value-icon">🤝</div>
+            <div class="value-title">Mentorship</div>
+            <div class="value-desc">One-on-one guidance from women who've walked the path before.</div>
+          </div>
+          <div class="value-card">
+            <div class="value-icon">💼</div>
+            <div class="value-title">Economic Power</div>
+            <div class="value-desc">Micro-grants, business training, and financial independence programs.</div>
+          </div>
+          <div class="value-card">
+            <div class="value-icon">🌱</div>
+            <div class="value-title">Wellbeing</div>
+            <div class="value-desc">Mental health, physical health, and holistic care for every woman.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- IMPACT NUMBERS -->
+  <section id="impact">
+    <div class="impact-inner">
+      <div class="impact-header reveal">
+        <div class="section-label" style="color:var(--rose);justify-content:center;">Our Impact</div>
+        <h2 class="section-heading" style="color:var(--warm-white);text-align:center;">Numbers That Tell<br><em style="color:var(--rose)">Real Stories</em></h2>
+        <p class="section-body" style="text-align:center;margin:0 auto;">Behind every statistic is a woman whose life changed direction.</p>
+      </div>
+      <div class="impact-grid">
+        <div class="impact-item reveal delay-1">
+          <span class="impact-num" data-target="5000">0<span class="impact-plus">+</span></span>
+          <div class="impact-label">Women Supported</div>
+          <div class="impact-desc">Across all programs since 2016</div>
+        </div>
+        <div class="impact-item reveal delay-2">
+          <span class="impact-num" data-target="120">0<span class="impact-plus">+</span></span>
+          <div class="impact-label">Communities</div>
+          <div class="impact-desc">Urban, rural and tribal areas</div>
+        </div>
+        <div class="impact-item reveal delay-3">
+          <span class="impact-num" data-target="340">0<span class="impact-plus">+</span></span>
+          <div class="impact-label">Volunteers</div>
+          <div class="impact-desc">Dedicated hearts giving time</div>
+        </div>
+        <div class="impact-item reveal delay-4">
+          <span class="impact-num" data-target="8">0</span>
+          <div class="impact-label">Years of Impact</div>
+          <div class="impact-desc">And growing stronger every day</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROGRAMS -->
+  <section id="programs" class="section">
+    <div class="section-inner">
+      <div class="programs-header">
+        <div class="reveal-left">
+          <div class="section-label">What We Do</div>
+          <h2 class="section-heading">Programs Built for<br><em>Real Change</em></h2>
+        </div>
+        <div class="programs-header-right reveal-right">
+          <p class="section-body" style="text-align:right;">Every program is designed around one question: what does this woman actually need to move forward?</p>
+        </div>
+      </div>
+      <div class="programs-grid">
+        <div class="program-card featured reveal-left">
+          <div class="program-img">
+            <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=600&q=80" alt="Leadership Program"/>
+          </div>
+          <div class="program-body">
+            <div class="program-tag">⭐ Flagship Program</div>
+            <div class="program-title">She Leads: Women in Leadership</div>
+            <div class="program-desc">A 6-month immersive program pairing emerging women leaders with industry mentors, providing real-world projects, public speaking training, and career placement support.</div>
+            <a href="#" class="program-link" style="color:var(--rose-light)">Learn more <span class="btn-arrow">→</span></a>
+          </div>
+        </div>
+        <div class="program-card reveal delay-1">
+          <div class="program-img">
+            <img src="https://images.unsplash.com/photo-1588072432836-e10032774350?w=500&q=80" alt="Education Program"/>
+          </div>
+          <div class="program-body">
+            <div class="program-tag">Education</div>
+            <div class="program-title">Skills Without Borders</div>
+            <div class="program-desc">Digital literacy, vocational training and scholarship access for girls aged 14–22 in underserved communities.</div>
+            <a href="#" class="program-link">Learn more <span class="btn-arrow">→</span></a>
+          </div>
+        </div>
+        <div class="program-card reveal delay-2">
+          <div class="program-img">
+            <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=500&q=80" alt="Business Program"/>
+          </div>
+          <div class="program-body">
+            <div class="program-tag">Economic</div>
+            <div class="program-title">Rise & Earn</div>
+            <div class="program-desc">Micro-grants, financial coaching, and peer business networks for women entrepreneurs building from scratch.</div>
+            <a href="#" class="program-link">Learn more <span class="btn-arrow">→</span></a>
+          </div>
+        </div>
+        <div class="program-card reveal delay-1">
+          <div class="program-img">
+            <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=500&q=80" alt="Wellness Program"/>
+          </div>
+          <div class="program-body">
+            <div class="program-tag">Wellbeing</div>
+            <div class="program-title">Whole Woman Wellness</div>
+            <div class="program-desc">Mental health support, nutrition guidance, and community care circles for sustainable inner strength.</div>
+            <a href="#" class="program-link">Learn more <span class="btn-arrow">→</span></a>
+          </div>
+        </div>
+        <div class="program-card reveal delay-2">
+          <div class="program-img">
+            <img src="https://images.unsplash.com/photo-1509099836639-18ba1795216d?w=500&q=80" alt="Community Program"/>
+          </div>
+          <div class="program-body">
+            <div class="program-tag">Community</div>
+            <div class="program-title">Village to Vision</div>
+            <div class="program-desc">Grassroots outreach in rural communities — connecting women with resources, rights education, and each other.</div>
+            <a href="#" class="program-link">Learn more <span class="btn-arrow">→</span></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section id="stories" class="section" style="background:var(--warm-white)">
+    <div class="section-inner">
+      <div class="stories-header reveal">
+        <div class="section-label" style="justify-content:center;">Voices</div>
+        <h2 class="section-heading">Their Words,<br><em>Our Purpose</em></h2>
+        <p class="section-body">The most honest measure of our work is what the women themselves say.</p>
+      </div>
+      <div class="testimonial-slider reveal">
+        <div class="testimonial-track" id="testimonialTrack">
+          <div class="testimonial-slide">
+            <div class="testimonial-inner">
+              <div class="t-quote-mark">"</div>
+              <p class="t-text">Before She Can, I believed my dreams had an expiry date. This program showed me that the only expiry date was the one I had set in my own mind. Today I run my own tailoring business and employ three other women.</p>
+              <div class="t-author">
+                <div class="t-avatar"><img src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=100&q=80" alt="Kavitha"/></div>
+                <div><div class="t-name">Kavitha Reddy</div><div class="t-role">Entrepreneur · Rise & Earn Program, 2022</div></div>
+              </div>
+            </div>
+          </div>
+          <div class="testimonial-slide">
+            <div class="testimonial-inner">
+              <div class="t-quote-mark">"</div>
+              <p class="t-text">The mentors here didn't talk at me — they sat with me. They understood what it meant to be first-generation, to carry the weight of expectation. For the first time, I didn't feel alone in my ambition.</p>
+              <div class="t-author">
+                <div class="t-avatar"><img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=100&q=80" alt="Aisha"/></div>
+                <div><div class="t-name">Aisha Banu</div><div class="t-role">Software Engineer · She Leads Program, 2023</div></div>
+              </div>
+            </div>
+          </div>
+          <div class="testimonial-slide">
+            <div class="testimonial-inner">
+              <div class="t-quote-mark">"</div>
+              <p class="t-text">I came into this program unable to speak English or use a computer. Eighteen months later, I am the digital literacy trainer for my village. She Can didn't just teach me skills — it gave me back my voice.</p>
+              <div class="t-author">
+                <div class="t-avatar"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&q=80" alt="Sunita"/></div>
+                <div><div class="t-name">Sunita Devi</div><div class="t-role">Community Trainer · Skills Without Borders, 2021</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="slider-controls">
+          <button class="slider-btn" onclick="moveSlider(-1)">←</button>
+          <div class="slider-dots" id="sliderDots">
+            <button class="slider-dot active" onclick="goToSlide(0)"></button>
+            <button class="slider-dot" onclick="goToSlide(1)"></button>
+            <button class="slider-dot" onclick="goToSlide(2)"></button>
+          </div>
+          <button class="slider-btn" onclick="moveSlider(1)">→</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TEAM -->
+  <section id="team" class="section">
+    <div class="section-inner">
+      <div class="team-header reveal">
+        <div class="section-label" style="justify-content:center;">The People</div>
+        <h2 class="section-heading">Driven by <em>Passion</em></h2>
+      </div>
+      <div class="team-grid">
+        <div class="team-card reveal delay-1">
+          <div class="team-img-wrap">
+            <img src="https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=400&q=80" alt="Founder"/>
+            <div class="team-overlay"><div class="team-social"><a href="#">in</a><a href="#">tw</a></div></div>
+          </div>
+          <div class="team-name">Ananya Krishnan</div>
+          <div class="team-role">Founder & CEO</div>
+        </div>
+        <div class="team-card reveal delay-2">
+          <div class="team-img-wrap">
+            <img src="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=400&q=80" alt="Director"/>
+            <div class="team-overlay"><div class="team-social"><a href="#">in</a><a href="#">tw</a></div></div>
+          </div>
+          <div class="team-name">Meera Subramaniam</div>
+          <div class="team-role">Program Director</div>
+        </div>
+        <div class="team-card reveal delay-3">
+          <div class="team-img-wrap">
+            <img src="https://images.unsplash.com/photo-1573496799652-408c2ac9fe98?w=400&q=80" alt="Head of Outreach"/>
+            <div class="team-overlay"><div class="team-social"><a href="#">in</a><a href="#">tw</a></div></div>
+          </div>
+          <div class="team-name">Divya Nair</div>
+          <div class="team-role">Head of Outreach</div>
+        </div>
+        <div class="team-card reveal delay-4">
+          <div class="team-img-wrap">
+            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&q=80" alt="Partnerships"/>
+            <div class="team-overlay"><div class="team-social"><a href="#">in</a><a href="#">tw</a></div></div>
+          </div>
+          <div class="team-name">Riya Malhotra</div>
+          <div class="team-role">Partnerships Lead</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EVENTS -->
+  <section id="events" class="section" style="background:var(--warm-white)">
+    <div class="section-inner">
+      <div class="section-label reveal">Upcoming</div>
+      <div class="events-grid">
+        <div>
+          <h2 class="section-heading reveal">Events &<br><em>Workshops</em></h2>
+          <div class="event-list">
+            <div class="event-item reveal delay-1">
+              <div class="event-date"><div class="event-day">12</div><div class="event-month">Jun</div></div>
+              <div class="event-info">
+                <div class="event-title">She Leads Annual Summit 2026</div>
+                <div class="event-meta">📍 Bengaluru · 9:00 AM – 6:00 PM</div>
+                <span class="event-badge">In Person</span>
+              </div>
+            </div>
+            <div class="event-item reveal delay-2">
+              <div class="event-date"><div class="event-day">24</div><div class="event-month">Jun</div></div>
+              <div class="event-info">
+                <div class="event-title">Digital Skills Bootcamp — Batch 7</div>
+                <div class="event-meta">💻 Online · 10:00 AM – 1:00 PM</div>
+                <span class="event-badge">Online</span>
+              </div>
+            </div>
+            <div class="event-item reveal delay-3">
+              <div class="event-date"><div class="event-day">05</div><div class="event-month">Jul</div></div>
+              <div class="event-info">
+                <div class="event-title">Volunteer Orientation Day</div>
+                <div class="event-meta">📍 Mysuru + Online · 2:00 PM – 4:00 PM</div>
+                <span class="event-badge">Hybrid</span>
+              </div>
+            </div>
+            <div class="event-item reveal delay-4">
+              <div class="event-date"><div class="event-day">19</div><div class="event-month">Jul</div></div>
+              <div class="event-info">
+                <div class="event-title">Rise & Earn: Micro-Grant Showcase</div>
+                <div class="event-meta">📍 Mysuru Community Hall · 11:00 AM</div>
+                <span class="event-badge">In Person</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="events-cta-card reveal-right">
+          <div>
+            <div class="ecc-label">Get Involved</div>
+            <div class="ecc-title">Host an Event With <em>Us</em></div>
+            <div class="ecc-desc">Partner with She Can to bring workshops, talks, and training programs to your community, company, or campus.</div>
+          </div>
+          <a href="#" class="btn-rose-small" onclick="showPage('contact')">Talk to Us →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section id="gallery" class="section">
+    <div class="section-inner">
+      <div class="gallery-header reveal">
+        <div class="section-label" style="justify-content:center;">Moments</div>
+        <h2 class="section-heading">Life at <em>She Can</em></h2>
+      </div>
+      <div class="gallery-grid reveal">
+        <div class="gallery-item tall">
+          <img src="https://images.unsplash.com/photo-1591522810850-58128c5fb089?w=500&q=80" alt="Workshop"/>
+        </div>
+        <div class="gallery-item">
+          <img src="https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?w=500&q=80" alt="Community"/>
+        </div>
+        <div class="gallery-item wide">
+          <img src="https://images.unsplash.com/photo-1542810634-71277d95dcbb?w=700&q=80" alt="Graduation"/>
+        </div>
+        <div class="gallery-item">
+          <img src="https://images.unsplash.com/photo-1509099836639-18ba1795216d?w=500&q=80" alt="Event"/>
+        </div>
+        <div class="gallery-item">
+          <img src="https://images.unsplash.com/photo-1573497491765-dccce02b29df?w=500&q=80" alt="Training"/>
+        </div>
+        <div class="gallery-item">
+          <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=500&q=80" alt="Workshop group"/>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VOLUNTEER CTA -->
+  <section id="volunteer-cta">
+    <div class="vcta-inner">
+      <div>
+        <div class="vcta-label reveal">Join the Movement</div>
+        <h2 class="vcta-title reveal">Your Time Can Change<br><em>Someone's Story</em></h2>
+        <p class="vcta-desc reveal">Whether you have an hour or a lifetime, your contribution matters. Volunteer, mentor, donate, or simply spread the word. Every action plants a seed.</p>
+      </div>
+      <div class="vcta-right reveal">
+        <a href="#" class="btn-rose-lg" onclick="showPage('contact')">✦ Volunteer Now</a>
+        <a href="#" class="btn-outline-white" onclick="showPage('contact')">Donate →</a>
+      </div>
+    </div>
+  </section>
+
+</div><!-- end home page -->
+
+<!-- ══════════════ CONTACT PAGE ══════════════ -->
+<div id="page-contact" class="page">
+
+  <div class="contact-hero">
+    <div class="contact-hero-orb"></div>
+    <div class="contact-hero-content">
+      <h1>Let's <em>Connect</em></h1>
+      <p>Whether you want to volunteer, partner, donate, or simply say hello — we'd love to hear from you.</p>
+    </div>
+  </div>
+
+  <div class="contact-section">
+    <div class="contact-grid">
+      <div class="contact-info reveal-left">
+        <div class="ci-title">Reach Out</div>
+        <div class="ci-items">
+          <div class="ci-item">
+            <div class="ci-icon">📍</div>
+            <div>
+              <div class="ci-label">Address</div>
+              <div class="ci-value">42, Gandhi Nagar, Mysuru, Karnataka 570001</div>
+            </div>
+          </div>
+          <div class="ci-item">
+            <div class="ci-icon">📧</div>
+            <div>
+              <div class="ci-label">Email</div>
+              <div class="ci-value">hello@shecancoundation.org</div>
+            </div>
+          </div>
+          <div class="ci-item">
+            <div class="ci-icon">📞</div>
+            <div>
+              <div class="ci-label">Phone</div>
+              <div class="ci-value">+91 98765 43210</div>
+            </div>
+          </div>
+          <div class="ci-item">
+            <div class="ci-icon">🕐</div>
+            <div>
+              <div class="ci-label">Office Hours</div>
+              <div class="ci-value">Mon – Sat, 9:00 AM – 6:00 PM</div>
+            </div>
+          </div>
+        </div>
+        <div style="background:var(--ink);border-radius:16px;padding:1.8rem;">
+          <div style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:white;margin-bottom:0.6rem;">Want to volunteer?</div>
+          <p style="font-size:0.85rem;color:rgba(255,255,255,0.5);line-height:1.7;">Fill in the form and select "Volunteer" as your reason. Our team will get back to you within 48 hours.</p>
+        </div>
+      </div>
+      <div class="contact-form-wrap reveal-right">
+        <div class="form-row">
+          <div class="form-group">
+            <label>First Name</label>
+            <input type="text" placeholder="Ananya"/>
+          </div>
+          <div class="form-group">
+            <label>Last Name</label>
+            <input type="text" placeholder="Sharma"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" placeholder="you@example.com"/>
+        </div>
+        <div class="form-group">
+          <label>I want to</label>
+          <select>
+            <option>Volunteer with She Can</option>
+            <option>Partner / Sponsor</option>
+            <option>Make a Donation</option>
+            <option>Learn about Programs</option>
+            <option>Media / Press Enquiry</option>
+            <option>Something else</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Message</label>
+          <textarea placeholder="Tell us a little about yourself and how you'd like to get involved…"></textarea>
+        </div>
+        <button class="form-submit" onclick="handleFormSubmit(event)">Send Message ✦</button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end contact page -->
+
+<!-- FOOTER (always visible) -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <span class="footer-logo">She <em>Can</em> ✦</span>
+      <p class="footer-tagline">Empowering women — one story, one skill, one dream at a time. Because when she rises, we all rise.</p>
+      <div class="footer-socials">
+        <a href="#" class="footer-social">in</a>
+        <a href="#" class="footer-social">tw</a>
+        <a href="#" class="footer-social">fb</a>
+        <a href="#" class="footer-social">ig</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Foundation</h4>
+      <ul>
+        <li><a href="#" onclick="showPage('home');scrollTo('about-section')">About Us</a></li>
+        <li><a href="#" onclick="showPage('home');scrollTo('team')">Our Team</a></li>
+        <li><a href="#" onclick="showPage('home');scrollTo('impact')">Impact</a></li>
+        <li><a href="#" onclick="showPage('home');scrollTo('stories')">Stories</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Programs</h4>
+      <ul>
+        <li><a href="#">She Leads</a></li>
+        <li><a href="#">Skills Without Borders</a></li>
+        <li><a href="#">Rise & Earn</a></li>
+        <li><a href="#">Whole Woman Wellness</a></li>
+        <li><a href="#">Village to Vision</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Get Involved</h4>
+      <ul>
+        <li><a href="#" onclick="showPage('contact')">Volunteer</a></li>
+        <li><a href="#" onclick="showPage('contact')">Donate</a></li>
+        <li><a href="#" onclick="showPage('contact')">Partner With Us</a></li>
+        <li><a href="#" onclick="showPage('home');scrollTo('events')">Events</a></li>
+        <li><a href="#" onclick="showPage('contact')">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2024 She Can Foundation. All rights reserved. · Registered NGO · 80G Certified</span>
+    <span class="footer-love">Made with <span>♥</span> for every woman who dares to dream.</span>
+  </div>
+</footer>
+
+<script>
+/* ═══════════════════════════════════
+   LOADER
+═══════════════════════════════════ */
+window.addEventListener('load',()=>{
+  setTimeout(()=>{document.getElementById('loader').classList.add('done');},1900);
+});
+
+/* ═══════════════════════════════════
+   CUSTOM CURSOR
+═══════════════════════════════════ */
+const cursor=document.getElementById('cursor');
+const ring=document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX;my=e.clientY;
+  cursor.style.left=mx+'px';cursor.style.top=my+'px';
+});
+function animRing(){
+  rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;
+  ring.style.left=rx+'px';ring.style.top=ry+'px';
+  requestAnimationFrame(animRing);
+}animRing();
+document.querySelectorAll('a,button,.value-card,.program-card,.impact-item,.event-item,.team-card,.gallery-item').forEach(el=>{
+  el.addEventListener('mouseenter',()=>document.body.classList.add('cursor-grow'));
+  el.addEventListener('mouseleave',()=>document.body.classList.remove('cursor-grow'));
+});
+
+/* ═══════════════════════════════════
+   NAV SCROLL
+═══════════════════════════════════ */
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>{
+  nav.classList.toggle('scrolled',window.scrollY>60);
+});
+
+/* ═══════════════════════════════════
+   PAGE NAVIGATION
+═══════════════════════════════════ */
+function showPage(name){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+  setTimeout(initReveal,100);
+}
+function scrollTo(id){
+  setTimeout(()=>{
+    const el=document.getElementById(id);
+    if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
+  },150);
+}
+
+/* ═══════════════════════════════════
+   MOBILE MENU
+═══════════════════════════════════ */
+function toggleMobile(){
+  const h=document.getElementById('hamburger');
+  const m=document.getElementById('mobileMenu');
+  h.classList.toggle('open');
+  m.classList.toggle('open');
+}
+function closeMobile(){
+  document.getElementById('hamburger').classList.remove('open');
+  document.getElementById('mobileMenu').classList.remove('open');
+}
+
+/* ═══════════════════════════════════
+   REVEAL ON SCROLL
+═══════════════════════════════════ */
+function initReveal(){
+  const reveals=document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale');
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});
+  },{threshold:0.12});
+  reveals.forEach(el=>{if(!el.classList.contains('visible'))obs.observe(el);});
+}
+initReveal();
+
+/* ═══════════════════════════════════
+   COUNTER ANIMATION
+═══════════════════════════════════ */
+function animateCounter(el,target){
+  let current=0;
+  const duration=1800;
+  const step=target/duration*16;
+  const timer=setInterval(()=>{
+    current=Math.min(current+step,target);
+    const display=target>=1000?(current/1000).toFixed(1)+'K':Math.floor(current).toString();
+    el.childNodes[0].textContent=display;
+    if(current>=target)clearInterval(timer);
+  },16);
+}
+const counterObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.querySelectorAll('.impact-num[data-target]').forEach(el=>{
+        animateCounter(el,parseInt(el.dataset.target));
+      });
+      counterObs.unobserve(e.target);
+    }
+  });
+},{threshold:0.3});
+const impactSec=document.getElementById('impact');
+if(impactSec)counterObs.observe(impactSec);
+
+/* ═══════════════════════════════════
+   TESTIMONIAL SLIDER
+═══════════════════════════════════ */
+let currentSlide=0;
+const totalSlides=3;
+function goToSlide(n){
+  currentSlide=n;
+  document.getElementById('testimonialTrack').style.transform=`translateX(-${n*100}%)`;
+  document.querySelectorAll('.slider-dot').forEach((d,i)=>d.classList.toggle('active',i===n));
+}
+function moveSlider(dir){
+  goToSlide((currentSlide+dir+totalSlides)%totalSlides);
+}
+setInterval(()=>moveSlider(1),5000);
+
+/* ═══════════════════════════════════
+   FORM
+═══════════════════════════════════ */
+function handleFormSubmit(e){
+  e.preventDefault();
+  const btn=e.target;
+  btn.textContent='Sending…';btn.style.opacity='0.7';
+  setTimeout(()=>{
+    btn.textContent='✓ Message Sent! We\'ll be in touch soon.';
+    btn.style.background='#2d7a4f';btn.style.opacity='1';
+    setTimeout(()=>{btn.textContent='Send Message ✦';btn.style.background='';},4000);
+  },1200);
+}
+
+/* ═══════════════════════════════════
+   HERO TEXT LINES STAGGER
+═══════════════════════════════════ */
+document.querySelectorAll('.hero-title .line').forEach((el,i)=>{
+  el.style.animation=`fadeSlideUp 0.8s ${0.5+i*0.15}s ease both`;
+});
+</script>
+</body>
+</html>
